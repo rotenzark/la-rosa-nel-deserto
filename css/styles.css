@@ -1,0 +1,326 @@
+/* ═══════════════════════════════════════════════════════════════
+   La Rosa nel Deserto — Milano Bicocca
+   Concept: «Dalle otto alle nove di sera». In zona uffici e
+   Università l'orario lungo è l'unica cosa che i concorrenti non
+   possono copiare: il sito è una linea della giornata, con l'ora
+   corrente segnata dal vivo.
+   Palette dalle FOTO REALI: pareti giallo-arancio spatolate,
+   bancone a mosaico, pelle arancione, legno ciliegio, gres beige.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── plumbing (reset tecnico canonico) ─────────────────────────── */
+[hidden] { display: none !important; }
+img { max-width: 100%; height: auto; }
+
+.js .reveal { opacity: 0; }
+.js .reveal.in-view { opacity: 1; }
+html:not(.js) .reveal { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .hero__kicker, .hero__h, .hero__lead, .barra, .hero__cta, .hero__stato { opacity: 1 !important; transform: none !important; }
+}
+
+/* ── design system ─────────────────────────────────────────────── */
+:root {
+  --sabbia:   #FBF4E9;
+  --sabbia-d: #F2E6D4;
+  --ocra:     #E8A33D;
+  --ocra-d:   #D2691E;
+  --ciliegio: #7B3A2A;
+  --ciliegio-l:#9C5138;
+  --inchiostro:#3A322A;
+  --grigio:   #8A7A66;
+  --mosaico1: #4E7A8C;
+
+  --serif: 'Rufina', Georgia, serif;
+  --sans:  'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --wrap: 1140px;
+  --gut: clamp(20px, 5vw, 58px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--sabbia);
+  color: var(--inchiostro);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(16px, 1.05vw, 17.5px);
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.18; margin: 0; }
+p { margin: 0 0 1.1em; }
+a { color: inherit; }
+::selection { background: var(--ocra); color: var(--ciliegio); }
+
+.occhiello {
+  font-size: .7rem; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--ocra-d); font-weight: 600; margin-bottom: .8rem;
+}
+.btn {
+  display: inline-block; padding: .92em 1.9em; border-radius: 3px;
+  font-size: .85rem; letter-spacing: .04em; font-weight: 500;
+  text-decoration: none; transition: background .25s, color .25s, border-color .25s;
+}
+.btn--ocra { background: var(--ocra); color: var(--ciliegio); font-weight: 600; }
+.btn--ocra:hover { background: var(--ocra-d); color: var(--sabbia); }
+.btn--linea { border: 1.5px solid var(--ciliegio); color: var(--ciliegio); }
+.btn--linea:hover { background: var(--ciliegio); color: var(--sabbia); }
+
+/* ── intro: la rosa del deserto che si compone ─────────────────── */
+#intro {
+  position: fixed; inset: 0; z-index: 200; background: var(--ciliegio);
+  display: grid; place-items: center; transition: opacity .6s ease;
+}
+#intro.hide { opacity: 0; pointer-events: none; }
+.intro__wrap { text-align: center; }
+.intro__rosa { width: min(42vw, 190px); display: block; margin: 0 auto 1rem; }
+.intro__rosa .petalo { opacity: 0; transform-origin: 60px 60px; animation: petaloIn .9s cubic-bezier(.2,.8,.3,1) forwards; }
+.intro__rosa .petalo:nth-child(1) { animation-delay: .05s; }
+.intro__rosa .petalo:nth-child(2) { animation-delay: .22s; }
+.intro__rosa .petalo:nth-child(3) { animation-delay: .38s; }
+.intro__rosa .petalo:nth-child(4) { animation-delay: .54s; }
+@keyframes petaloIn { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: scale(1); } }
+.intro__nome {
+  font-family: var(--serif); font-size: clamp(1.3rem, 5vw, 2.1rem); color: var(--sabbia);
+  opacity: 0; animation: nomeIn .8s .7s ease forwards; display: block;
+}
+@keyframes nomeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── header ────────────────────────────────────────────────────── */
+#site-header {
+  position: sticky; top: 0; z-index: 90;
+  display: flex; align-items: center; gap: 1.4rem;
+  padding: .75rem var(--gut);
+  /* niente backdrop-filter su header/nav */
+  background: rgba(251,244,233,.98);
+  border-bottom: 1px solid rgba(123,58,42,.16);
+}
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; margin-right: auto; }
+.brand__rosa {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--ocra); position: relative; flex: none;
+}
+.brand__rosa::after {
+  content: ''; position: absolute; inset: 5px; border-radius: 50%; border: 1.5px solid var(--ocra);
+}
+.brand__nome { font-family: var(--serif); font-size: 1.1rem; color: var(--ciliegio); }
+.brand__nome em { font-style: italic; color: var(--grigio); }
+#mainNav { display: flex; gap: 1.5rem; }
+#mainNav a {
+  text-decoration: none; font-size: .84rem; font-weight: 400; padding: .3rem 0;
+  border-bottom: 2px solid transparent; transition: border-color .2s, color .2s;
+}
+#mainNav a:hover { color: var(--ocra-d); border-bottom-color: var(--ocra); }
+.head-actions { display: flex; align-items: center; gap: .7rem; }
+.lang {
+  background: none; border: 1px solid rgba(58,50,42,.28); color: var(--inchiostro);
+  font-family: var(--sans); font-size: .72rem; font-weight: 500;
+  padding: .42em .78em; border-radius: 3px; cursor: pointer; transition: border-color .2s;
+}
+.lang:hover { border-color: var(--ocra); }
+.cta-head {
+  background: var(--ciliegio); color: var(--sabbia); text-decoration: none;
+  padding: .56em 1.2em; border-radius: 3px; font-size: .8rem; font-weight: 500; transition: background .25s;
+}
+.cta-head:hover { background: var(--ciliegio-l); }
+#burger { display: none; flex-direction: column; gap: 5px; background: none; border: 0; cursor: pointer; padding: 6px; position: relative; z-index: 96; }
+#burger span { display: block; width: 24px; height: 2px; background: var(--ciliegio); transition: transform .3s, opacity .3s; }
+#burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+#burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── HERO + la barra della giornata (gesto-firma) ──────────────── */
+.hero {
+  max-width: var(--wrap); margin: 0 auto;
+  padding: clamp(2.6rem, 7vw, 5rem) var(--gut) clamp(2.4rem, 6vw, 4rem);
+  text-align: center;
+}
+.hero__kicker { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--grigio); }
+.hero__h { font-size: clamp(2.2rem, 7vw, 4.4rem); margin: .6rem 0 1.1rem; color: var(--ciliegio); }
+.hero__l1 { display: block; }
+.hero__l2 { display: block; color: var(--ocra-d); }
+.hero__lead { max-width: 56ch; margin: 0 auto 2.4rem; color: var(--inchiostro); }
+
+.barra { max-width: 780px; margin: 0 auto 1.6rem; }
+.barra__linea {
+  position: relative; height: 12px; border-radius: 999px;
+  background: var(--sabbia-d); overflow: visible;
+}
+.barra__pieno {
+  position: absolute; inset: 0 auto 0 0; width: 0;
+  border-radius: 999px; background: linear-gradient(90deg, var(--ocra), var(--ocra-d));
+  transition: width 1.3s cubic-bezier(.2,.8,.3,1);
+}
+/* senza JavaScript la barra non sarebbe riempita da nessuno: si mostra
+   piena, così la fascia oraria resta leggibile invece di sembrare vuota */
+html:not(.js) .barra__pieno { width: 100%; }
+.barra__ora {
+  position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%);
+  background: var(--ciliegio); color: var(--sabbia);
+  font-size: .68rem; font-weight: 600; letter-spacing: .04em;
+  padding: .25em .6em; border-radius: 999px; white-space: nowrap;
+  box-shadow: 0 0 0 3px var(--sabbia);
+}
+.barra__tacche {
+  list-style: none; padding: 0; margin: .9rem 0 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem;
+}
+.barra__tacche li { display: flex; flex-direction: column; align-items: center; gap: .1rem; }
+.barra__tacche b { font-family: var(--serif); font-size: 1.15rem; color: var(--ciliegio); }
+.barra__tacche span { font-size: .7rem; color: var(--grigio); letter-spacing: .02em; text-align: center; }
+
+.hero__stato { font-size: .9rem; font-weight: 500; color: var(--ocra-d); margin-bottom: 1.4rem; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: .7rem; justify-content: center; }
+
+/* ── LE TRE VETRINE ────────────────────────────────────────────── */
+.porte { background: var(--sabbia-d); padding: clamp(3rem, 7vw, 5rem) var(--gut); }
+.porte__head { max-width: var(--wrap); margin: 0 auto clamp(1.6rem, 3.4vw, 2.4rem); }
+.porte__head h2 { font-size: clamp(1.8rem, 4.4vw, 2.8rem); color: var(--ciliegio); margin-bottom: .6rem; }
+.porte__head p { color: var(--grigio); }
+.porte__grid {
+  max-width: var(--wrap); margin: 0 auto clamp(1.6rem, 3.4vw, 2.4rem);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(.9rem, 2vw, 1.4rem);
+}
+.porta { background: var(--sabbia); border-left: 3px solid var(--ocra); padding: 1.4rem; }
+.porta__n { font-family: var(--serif); font-size: .9rem; color: var(--ocra-d); letter-spacing: .16em; margin-bottom: .4rem; }
+.porta h3 { font-size: 1.3rem; color: var(--ciliegio); margin-bottom: .5rem; }
+.porta p { font-size: .92rem; color: var(--inchiostro); margin: 0; }
+.porte__foto { max-width: var(--wrap); margin: 0 auto; }
+.porte__foto button, .storia__foto button, .dove__foto button {
+  display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; line-height: 0;
+}
+.porte__foto img { width: 100%; border-radius: 6px; }
+.porte__foto figcaption { font-size: .78rem; color: var(--grigio); margin-top: .6rem; text-align: center; }
+
+/* ── STORIA ────────────────────────────────────────────────────── */
+.storia {
+  max-width: var(--wrap); margin: 0 auto;
+  padding: clamp(3rem, 7vw, 5rem) var(--gut);
+  display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(1.6rem, 4vw, 3.2rem); align-items: center;
+}
+.storia__testo h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); color: var(--ciliegio); margin-bottom: 1.1rem; }
+.storia__num { list-style: none; padding: 0; margin: 1.8rem 0 0; display: flex; flex-wrap: wrap; gap: clamp(1.2rem, 3vw, 2.6rem); }
+.storia__num li { display: flex; flex-direction: column; }
+.storia__num b { font-family: var(--serif); font-size: 2rem; color: var(--ocra-d); line-height: 1; }
+.storia__num span { font-size: .76rem; color: var(--grigio); max-width: 15ch; margin-top: .3rem; }
+.storia__foto img { width: 100%; border-radius: 6px; }
+
+/* ── LISTINO ───────────────────────────────────────────────────── */
+.listino { background: var(--ciliegio); color: var(--sabbia); padding: clamp(3rem, 7vw, 5rem) var(--gut); }
+.listino__head { max-width: var(--wrap); margin: 0 auto clamp(1.4rem, 3vw, 2rem); }
+.listino__head .occhiello { color: var(--ocra); }
+.listino__head h2 { font-size: clamp(1.8rem, 4.4vw, 2.8rem); }
+.listino__grid { max-width: var(--wrap); margin: 0 auto; }
+.voce-p {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1.4rem;
+  padding: 1rem .2rem; border-bottom: 1px solid rgba(251,244,233,.2);
+}
+.voce-p:first-child { border-top: 1px solid rgba(251,244,233,.2); }
+.voce-p h3 { font-size: 1.06rem; font-weight: 400; margin-bottom: .12rem; }
+.voce-p div p { font-size: .78rem; color: rgba(251,244,233,.62); margin: 0; }
+.voce-p__p { font-family: var(--serif); font-size: 1.5rem; color: var(--ocra); margin: 0; white-space: nowrap; }
+.famiglie { max-width: var(--wrap); margin: clamp(1.8rem, 4vw, 2.6rem) auto 0; }
+.famiglie h3 { font-size: 1.15rem; margin-bottom: 1rem; }
+.famiglie ul { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: .4rem 1.6rem; }
+.famiglie li { padding-left: 1.2rem; position: relative; font-size: .92rem; color: rgba(251,244,233,.9); }
+.famiglie li::before { content: ''; position: absolute; left: 0; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: var(--ocra); }
+.famiglie__nota { font-size: .82rem; color: rgba(251,244,233,.6); margin: 0; }
+
+/* ── RECENSIONI ────────────────────────────────────────────────── */
+.voci { padding: clamp(3rem, 7vw, 5rem) var(--gut); }
+.voci__head { max-width: var(--wrap); margin: 0 auto clamp(1.4rem, 3vw, 2.2rem); }
+.voci__head h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); color: var(--ciliegio); }
+.voci__grid { max-width: var(--wrap); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: clamp(1rem, 2.2vw, 1.4rem); }
+.voce { margin: 0; background: var(--sabbia-d); border-radius: 6px; padding: 1.3rem; }
+.voce p { font-family: var(--serif); font-size: 1rem; line-height: 1.55; color: var(--ciliegio); }
+.voce cite { font-style: normal; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ocra-d); font-weight: 500; }
+
+/* ── DOVE ──────────────────────────────────────────────────────── */
+.dove {
+  max-width: var(--wrap); margin: 0 auto;
+  padding: clamp(3rem, 7vw, 5rem) var(--gut);
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.6rem, 4vw, 3.2rem); align-items: start;
+}
+.dove__info h2 { font-size: clamp(1.6rem, 3.8vw, 2.4rem); color: var(--ciliegio); margin-bottom: 1rem; }
+.orari { list-style: none; padding: 0; margin: 1.2rem 0; }
+.orari li { display: flex; justify-content: space-between; gap: 1rem; padding: .48em .55em; font-size: .9rem; border-bottom: 1px solid rgba(58,50,42,.12); }
+.orari li span:first-child { text-transform: capitalize; }
+.orari li.is-today { background: rgba(232,163,61,.24); border-radius: 4px; font-weight: 500; }
+.dove__foto { margin: 1.4rem 0 0; }
+.dove__foto img { width: 100%; border-radius: 6px; }
+.dove__mappa iframe { width: 100%; height: clamp(320px, 46vh, 450px); display: block; border-radius: 6px; border: 1px solid rgba(123,58,42,.2); }
+
+/* ── FAQ ───────────────────────────────────────────────────────── */
+.faq { max-width: 840px; margin: 0 auto; padding: 0 var(--gut) clamp(3rem, 7vw, 5rem); }
+.faq h2 { font-size: clamp(1.6rem, 3.8vw, 2.3rem); color: var(--ciliegio); margin-bottom: 1.3rem; }
+.faq details { border-bottom: 1px solid rgba(58,50,42,.14); }
+.faq summary { cursor: pointer; padding: 1em 2em 1em 0; font-weight: 500; list-style: none; position: relative; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: '+'; position: absolute; right: .2em; top: 50%; transform: translateY(-50%);
+  font-family: var(--serif); font-size: 1.4rem; color: var(--ocra-d); transition: transform .25s;
+}
+.faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.faq details p { padding: 0 1.5rem 1.2em 0; color: var(--grigio); font-size: .93rem; margin: 0; }
+
+/* ── footer ────────────────────────────────────────────────────── */
+footer { background: var(--ciliegio); color: rgba(251,244,233,.85); text-align: center; padding: clamp(2.4rem, 6vw, 3.6rem) var(--gut) 5.5rem; }
+.foot__nome { font-family: var(--serif); font-size: 1.3rem; color: var(--ocra); margin-bottom: .5rem; }
+.foot__riga { font-size: .88rem; margin: 0 0 .3rem; }
+.foot__riga a { color: var(--ocra); }
+.foot__nota { font-size: .74rem; color: rgba(251,244,233,.5); margin-top: 1.3rem; }
+
+/* ── action bar ────────────────────────────────────────────────── */
+#actionBar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80; display: none;
+  background: rgba(123,58,42,.98); transform: translateY(102%); transition: transform .3s;
+}
+#actionBar.is-visible { transform: translateY(0); }
+#actionBar a { flex: 1; text-align: center; padding: .95rem .4rem; text-decoration: none; color: var(--sabbia); font-size: .78rem; font-weight: 500; }
+#actionBar a + a { border-left: 1px solid rgba(251,244,233,.2); }
+
+/* ── lightbox ──────────────────────────────────────────────────── */
+#lightbox {
+  position: fixed; inset: 0; z-index: 300; background: rgba(58,50,42,.94);
+  display: flex; align-items: center; justify-content: center; padding: 4vw;
+}
+#lightbox img { max-width: 100%; max-height: 88vh; border-radius: 6px; }
+#lightboxClose { position: absolute; top: 1.1rem; right: 1.5rem; background: none; border: 0; color: var(--sabbia); font-size: 2.4rem; line-height: 1; cursor: pointer; }
+
+/* ── responsive ────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  #burger { display: flex; }
+  #mainNav {
+    position: fixed; inset: 0 0 0 auto; width: min(76vw, 310px);
+    background: rgba(251,244,233,.995);
+    flex-direction: column; justify-content: center; gap: 1.5rem; padding: 2rem;
+    transform: translateX(100%); transition: transform .32s ease;
+    border-left: 1px solid rgba(123,58,42,.2);
+  }
+  #mainNav.nav-open { transform: translateX(0); }
+  #mainNav a { font-size: 1.05rem; }
+  .cta-head { display: none; }
+  .porte__grid { grid-template-columns: 1fr; }
+  .storia, .dove { grid-template-columns: 1fr; }
+  #actionBar { display: flex; }
+}
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .hero__cta { flex-direction: column; }
+  .hero__cta .btn { width: 100%; text-align: center; }
+  .barra__tacche { grid-template-columns: repeat(2, 1fr); gap: .8rem .4rem; }
+  .voce-p { flex-direction: column; gap: .2rem; }
+  .storia__num { gap: 1.2rem; }
+}
